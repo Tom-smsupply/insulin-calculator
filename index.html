@@ -44,6 +44,73 @@
         .card { background: var(--card-bg); border-radius: 20px; padding: 16px; margin-bottom: 14px; box-shadow: var(--shadow); }
         .card-title { font-family: 'Fredoka One', cursive; font-size: 1.1rem; color: var(--secondary); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
 
+        /* Ratio Section - Restored to original look */
+        .ratio-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .ratio-btn {
+            padding: 12px 8px;
+            border: 3px solid #e0e0e0;
+            border-radius: 14px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        .ratio-btn.active {
+            border-color: var(--secondary);
+            background: linear-gradient(135deg, #e8f8f7 0%, #d4f4f1 100%);
+        }
+        .ratio-btn .ratio-name {
+            font-weight: 800;
+            font-size: 1rem;
+            color: var(--text-dark);
+        }
+        .ratio-btn .ratio-value {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        .custom-ratio {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .ratio-input-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .ratio-input-group label {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+        .ratio-input-group input {
+            width: 60px;
+            padding: 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-align: center;
+        }
+        .save-ratio-btn {
+            padding: 8px 16px;
+            background: var(--accent);
+            border: none;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
         /* Search & Suggestions */
         .search-container { position: relative; margin-bottom: 12px; }
         .search-input { width: 100%; padding: 12px 16px; padding-left: 44px; border: 3px solid #e0e0e0; border-radius: 14px; font-size: 1rem; font-weight: 600; }
@@ -58,11 +125,11 @@
         .suggestion-item:last-child { border-bottom: none; }
         .suggestion-item:hover { background: #f0f8f7; }
 
-        /* Your other existing styles (food-list, food-item, selected-item, results-banner, etc.) */
+        /* Rest of your styles */
         .food-list { max-height: 320px; overflow-y: auto; border-radius: 14px; border: 2px solid #f0f0f0; }
         .food-item { display: flex; align-items: center; padding: 12px 14px; border-bottom: 1px solid #f0f0f0; cursor: pointer; }
         .food-item.selected { background: linear-gradient(135deg, #ffe8e8 0%, #ffd4d4 100%); }
-        .food-checkbox { width: 22px; height: 22px; border: 3px solid #ddd; border-radius: 6px; margin-right: 8px; display: flex; align-items: center; justify-content: center; }
+        .food-checkbox { width: 22px; height: 22px; border: 3px solid #ddd; border-radius: 6px; margin-right: 8px; }
         .food-item.selected .food-checkbox { background: var(--success); border-color: var(--success); }
         .food-checkbox::after { content: '✓'; color: white; font-weight: 800; font-size: 0.8rem; opacity: 0; }
         .food-item.selected .food-checkbox::after { opacity: 1; }
@@ -77,7 +144,7 @@
         .serving-btn { width: 28px; height: 28px; border: 2px solid #e0e0e0; border-radius: 8px; background: white; font-size: 1.1rem; font-weight: 800; cursor: pointer; }
         .results-banner { position: fixed; bottom: 0; left: 0; right: 0; background: linear-gradient(135deg, var(--secondary) 0%, #45b7aa 100%); color: white; padding: 10px 16px; display: none; z-index: 1000; }
         .results-banner.show { display: block; }
-        .disclaimer { text-align: center; font-size: 0.7rem; color: var(--text-light); margin-top: 16px; padding: 12px; background: rgba(255,255,255,0.5); border-radius: 12px; }
+        .disclaimer { text-align: center; font-size: 0.7rem; color: var(--text-light); margin-top: 16px; padding: 12px; background: rgba(255,255,255,0.5); border-radius: 12px; line-height: 1.4; }
     </style>
 </head>
 <body>
@@ -87,12 +154,18 @@
             <p class="subtitle">Build your meal & calculate your dose!</p>
         </header>
 
-        <!-- Ratio Section -->
+        <!-- Ratio Section - FIXED to match your original design -->
         <div class="card">
             <h2 class="card-title"><span class="emoji">⚙️</span> My Insulin Ratio</h2>
             <div class="ratio-buttons">
-                <button class="ratio-btn active" id="ratio1" onclick="selectRatio(1)">Breakfast<br>1 : <span id="ratio1-display">10</span>g</button>
-                <button class="ratio-btn" id="ratio2" onclick="selectRatio(2)">Other Meals<br>1 : <span id="ratio2-display">15</span>g</button>
+                <button class="ratio-btn active" id="ratio1" onclick="selectRatio(1)">
+                    <div class="ratio-name">Breakfast</div>
+                    <div class="ratio-value">1 unit : <span id="ratio1-display">10</span>g</div>
+                </button>
+                <button class="ratio-btn" id="ratio2" onclick="selectRatio(2)">
+                    <div class="ratio-name">Other Meals</div>
+                    <div class="ratio-value">1 unit : <span id="ratio2-display">15</span>g</div>
+                </button>
             </div>
             <div class="custom-ratio">
                 <div class="ratio-input-group">
@@ -104,7 +177,7 @@
             </div>
         </div>
 
-        <!-- Food Search -->
+        <!-- Food Search with live suggestions -->
         <div class="card">
             <h2 class="card-title"><span class="emoji">🍽️</span> Add Foods</h2>
             <div class="search-container">
@@ -116,7 +189,7 @@
             <div class="category-filters">
                 <button class="category-btn favorites-filter" data-category="favorites" onclick="filterByCategory('favorites', this)">⭐ Favorites</button>
                 <button class="category-btn active" data-category="all" onclick="filterByCategory('all', this)">All</button>
-                <button class="category-btn" style="background:#e8f8f7;border-color:var(--secondary)" onclick="openManualModal()">➕ Manual Add</button>
+                <button class="category-btn" style="background:#e8f8f7; border-color:var(--secondary)" onclick="openManualModal()">➕ Manual Add</button>
                 <button class="category-btn" data-category="breakfast" onclick="filterByCategory('breakfast', this)">🥣</button>
                 <button class="category-btn" data-category="fruits" onclick="filterByCategory('fruits', this)">🍎</button>
                 <button class="category-btn" data-category="grains" onclick="filterByCategory('grains', this)">🍞</button>
@@ -129,7 +202,7 @@
         </div>
 
         <!-- Selected Foods -->
-        <div class="card" id="selectedCard" style="display:none;">
+        <div class="card" id="selectedCard" style="display: none;">
             <h2 class="card-title"><span class="emoji">✅</span> My Meal</h2>
             <div class="selected-header">
                 <span class="selected-title">Foods selected:</span>
@@ -156,12 +229,46 @@
         </div>
     </div>
 
-    <!-- Manual Modal -->
+    <!-- Manual Add Modal -->
     <div id="manualModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:2000; align-items:center; justify-content:center; backdrop-filter: blur(5px);">
-        <!-- your manual modal content - unchanged -->
+        <div class="card" style="width:92%; max-width:400px; padding:20px; border: 4px solid var(--secondary);">
+            <h2 class="card-title"><span class="emoji">💾</span> Add Permanent Food</h2>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+                <div>
+                    <label style="font-weight:700; font-size:0.85rem; color: var(--text-light);">Food Name</label>
+                    <input type="text" id="manualName" placeholder="e.g. Grandma's Cookie" class="search-input" style="padding-left:15px; height: 45px;">
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div>
+                        <label style="font-weight:700; font-size:0.85rem; color: var(--text-light);">Carbs (g)</label>
+                        <input type="number" id="manualCarbs" placeholder="0" class="search-input" style="padding-left:15px; height: 45px;">
+                    </div>
+                    <div>
+                        <label style="font-weight:700; font-size:0.85rem; color: var(--text-light);">Serving Size</label>
+                        <input type="text" id="manualServing" placeholder="1 cookie" class="search-input" style="padding-left:15px; height: 45px;">
+                    </div>
+                </div>
+                <div>
+                    <label style="font-weight:700; font-size:0.85rem; color: var(--text-light);">Category</label>
+                    <select id="manualCategory" class="search-input" style="padding-left:15px; height: 45px; background: white;">
+                        <option value="breakfast">🥣 Breakfast</option>
+                        <option value="fruits">🍎 Fruits</option>
+                        <option value="grains">🍞 Grains</option>
+                        <option value="dairy">🥛 Dairy</option>
+                        <option value="snacks">🍪 Snacks</option>
+                        <option value="drinks">🧃 Drinks</option>
+                        <option value="meals">🍝 Meals</option>
+                    </select>
+                </div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px;">
+                    <button class="clear-btn" style="padding:12px; background:#eee; color:#666;" onclick="closeManualModal()">Cancel</button>
+                    <button class="save-ratio-btn" style="padding:12px; background:var(--secondary); color:white;" onclick="addManualFood()">Save to List</button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Disclaimer Modal -->
+    <!-- Disclaimer Popup -->
     <div id="disclaimerModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 3000; align-items: center; justify-content: center; backdrop-filter: blur(8px);">
         <div class="card" style="width: 92%; max-width: 420px; padding: 24px; border: 4px solid #ee5a5a; background: white; text-align: center;">
             <div style="font-size: 2.8rem; margin-bottom: 16px;">⚠️</div>
@@ -170,7 +277,7 @@
                 This app is for educational and estimation purposes only.<br><br>
                 Alora's Insulin Helper is <strong>NOT a medical device</strong>.<br><br>
                 Insulin dosing is serious. Incorrect calculations can be dangerous.<br><br>
-                Always verify with your diabetes care team or doctor.<br><br>
+                Always verify with your diabetes care team or doctor before using any calculated dose.<br><br>
                 The developer is <strong>not responsible</strong> for any incorrect calculations or health outcomes.
             </div>
             <button onclick="acknowledgeDisclaimer()" style="width:100%; padding:14px; background:var(--secondary); color:white; border:none; border-radius:14px; font-size:1.1rem; font-weight:800;">
@@ -181,8 +288,8 @@
 
     <script>
         // ==================== FOOD DATABASE ====================
-        const foodDatabase = [
-            // Food Database (USDA-based) - 1/2 cup servings, metric ml
+         // Food Database (USDA-based) - 1/2 cup servings, metric ml
+       const foodDatabase = [
             // --- BREAKFAST (0-50) ---
             { name: "Cheerios", serving: "½ cup (14g)", carbs: 10, emoji: "🥣", category: "breakfast" },
             { name: "Frosted Flakes", serving: "½ cup (18g)", carbs: 14, emoji: "🥣", category: "breakfast" },
@@ -388,7 +495,6 @@
 
         ];
 
-        // State
         let selectedFoods = [];
         let customFoods = [];
         let favorites = [];
@@ -400,7 +506,6 @@
         let activeRatio = 1;
         let activeCategory = 'all';
 
-        // Load / Save Data
         function loadSavedData() {
             const saved = localStorage.getItem('aloraInsulinHelperData');
             if (saved) {
@@ -433,9 +538,29 @@
         }
 
         // Manual Add
-        function openManualModal() { document.getElementById('manualModal').style.display = 'flex'; }
-        function closeManualModal() { document.getElementById('manualModal').style.display = 'none'; }
-        function addManualFood() { /* your existing addManualFood logic */ }
+        function openManualModal() {
+            document.getElementById('manualModal').style.display = 'flex';
+        }
+        function closeManualModal() {
+            document.getElementById('manualModal').style.display = 'none';
+        }
+        function addManualFood() {
+            const name = document.getElementById('manualName').value.trim();
+            const carbs = parseInt(document.getElementById('manualCarbs').value);
+            const serving = document.getElementById('manualServing').value.trim() || "1 serving";
+            const category = document.getElementById('manualCategory').value;
+
+            if (!name || isNaN(carbs)) {
+                alert("Please enter a name and carb count!");
+                return;
+            }
+
+            customFoods.push({ name, carbs, serving, emoji: "✨", category });
+            saveData();
+            renderFoodList(getFilteredFoods());
+            closeManualModal();
+            alert(name + " added to your list!");
+        }
 
         // Ratio Functions
         function updateRatioDisplay() {
@@ -455,7 +580,7 @@
         }
 
         function updateCustomRatio() {
-            const value = parseInt(document.getElementById('customRatio').value) || 10;
+            let value = parseInt(document.getElementById('customRatio').value) || 10;
             currentRatio = Math.max(1, Math.min(50, value));
             document.getElementById('customRatio').value = currentRatio;
             calculateInsulin();
@@ -467,12 +592,19 @@
             saveData();
         }
 
-        // Combined Database
         function getCombinedDatabase() {
             return [...foodDatabase, ...customFoods].sort((a, b) => a.name.localeCompare(b.name));
         }
 
-        // Render Food List
+        function getFilteredFoods() {
+            const term = document.getElementById('searchInput').value.toLowerCase().trim();
+            let foods = getCombinedDatabase();
+            if (term) foods = foods.filter(f => f.name.toLowerCase().includes(term));
+            if (activeCategory === 'favorites') foods = foods.filter(f => favorites.includes(f.name));
+            else if (activeCategory !== 'all') foods = foods.filter(f => f.category === activeCategory);
+            return foods;
+        }
+
         function renderFoodList(foods) {
             const container = document.getElementById('foodList');
             if (!foods || foods.length === 0) {
@@ -497,30 +629,9 @@
             }).join('');
         }
 
-        // Category Filter
-        function filterByCategory(category, btn) {
-            activeCategory = category;
-            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            renderFoodList(getFilteredFoods());
-        }
-
-        function getFilteredFoods() {
-            const term = document.getElementById('searchInput').value.toLowerCase().trim();
-            let foods = getCombinedDatabase();
-
-            if (term) foods = foods.filter(f => f.name.toLowerCase().includes(term));
-            if (activeCategory === 'favorites') foods = foods.filter(f => favorites.includes(f.name));
-            else if (activeCategory !== 'all') foods = foods.filter(f => f.category === activeCategory);
-
-            return foods;
-        }
-
-        // Toggle Food
         function toggleFood(foodName) {
             const food = getCombinedDatabase().find(f => f.name === foodName);
             if (!food) return;
-
             const index = selectedFoods.findIndex(f => f.name === foodName);
             if (index >= 0) selectedFoods.splice(index, 1);
             else selectedFoods.push({ ...food, servings: 1 });
@@ -530,7 +641,6 @@
             calculateInsulin();
         }
 
-        // Toggle Favorite
         function toggleFavorite(foodName, event) {
             event.stopPropagation();
             const index = favorites.indexOf(foodName);
@@ -540,7 +650,6 @@
             renderFoodList(getFilteredFoods());
         }
 
-        // Render Selected Foods
         function renderSelectedFoods() {
             const container = document.getElementById('selectedFoods');
             const card = document.getElementById('selectedCard');
@@ -549,18 +658,18 @@
                 return;
             }
             card.style.display = 'block';
-            container.innerHTML = selectedFoods.map((food, index) => `
+            container.innerHTML = selectedFoods.map((food, i) => `
                 <div class="selected-item">
                     <div class="selected-item-info">
                         <span>${food.emoji}</span>
                         <span>${food.name}</span>
                     </div>
                     <div class="serving-adjuster">
-                        <button class="serving-btn" onclick="adjustServing(${index}, -0.5)">−</button>
+                        <button class="serving-btn" onclick="adjustServing(${i}, -0.5)">−</button>
                         <span class="serving-count">${food.servings}</span>
-                        <button class="serving-btn" onclick="adjustServing(${index}, 0.5)">+</button>
+                        <button class="serving-btn" onclick="adjustServing(${i}, 0.5)">+</button>
                         <span class="serving-carbs">${Math.round(food.carbs * food.servings)}g</span>
-                        <button class="remove-btn" onclick="removeFood(${index})">✕</button>
+                        <button class="remove-btn" onclick="removeFood(${i})">✕</button>
                     </div>
                 </div>
             `).join('');
@@ -586,7 +695,6 @@
             calculateInsulin();
         }
 
-        // Calculate Insulin
         function calculateInsulin() {
             const banner = document.getElementById('resultsBanner');
             if (selectedFoods.length === 0) {
@@ -595,7 +703,7 @@
             }
             banner.classList.add('show');
 
-            const totalCarbs = selectedFoods.reduce((sum, food) => sum + (food.carbs * food.servings), 0);
+            const totalCarbs = selectedFoods.reduce((sum, f) => sum + f.carbs * f.servings, 0);
             const insulinNeeded = totalCarbs / currentRatio;
 
             document.getElementById('totalCarbs').textContent = Math.round(totalCarbs);
@@ -603,7 +711,6 @@
             document.getElementById('insulinNeeded').textContent = insulinNeeded.toFixed(1);
         }
 
-        // Live Search + Suggestions
         function handleSearchInput() {
             const term = document.getElementById('searchInput').value.toLowerCase().trim();
             const suggestionsBox = document.getElementById('suggestions');
@@ -614,20 +721,13 @@
                 return;
             }
 
-            const matches = getCombinedDatabase()
-                .filter(food => food.name.toLowerCase().includes(term))
-                .slice(0, 8);
-
-            if (matches.length === 0) {
-                suggestionsBox.style.display = 'none';
-                return;
-            }
+            const matches = getCombinedDatabase().filter(f => f.name.toLowerCase().includes(term)).slice(0, 8);
 
             suggestionsBox.innerHTML = matches.map(food => `
                 <div class="suggestion-item" onclick="selectSuggestion('${food.name.replace(/'/g, "\\'")}')">
                     <span>${food.emoji}</span>
                     <span style="flex:1">${food.name}</span>
-                    <span style="color:var(--primary);font-weight:700">${food.carbs}g</span>
+                    <span style="color:var(--primary); font-weight:700">${food.carbs}g</span>
                 </div>
             `).join('');
             suggestionsBox.style.display = 'block';
@@ -640,10 +740,15 @@
             toggleFood(foodName);
         }
 
-        // Init
+        function filterByCategory(category, btn) {
+            activeCategory = category;
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderFoodList(getFilteredFoods());
+        }
+
         function init() {
             showDisclaimerIfNeeded();
-            foodDatabase.sort((a, b) => a.name.localeCompare(b.name));
             loadSavedData();
             updateRatioDisplay();
 
