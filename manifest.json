@@ -1,0 +1,15 @@
+{
+  "short_name": "AloraDose",
+  "name": "Alora's Insulin Helper",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#ff6b6b",
+  "background_color": "#ffecd2"
+}
