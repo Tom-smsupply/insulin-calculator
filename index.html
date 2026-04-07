@@ -878,6 +878,7 @@
 
         // State
         let selectedFoods = [];
+        let customFoods = [];
         let favorites = [];
         let currentRatio = 10;
         let savedRatios = {
@@ -889,25 +890,27 @@
 
         // Load saved data from localStorage
         function loadSavedData() {
-            const saved = localStorage.getItem('aloraInsulinHelperData');
-            if (saved) {
-                const data = JSON.parse(saved);
-                savedRatios = data.savedRatios || savedRatios;
-                activeRatio = data.activeRatio || 1;
-                favorites = data.favorites || [];
-                currentRatio = savedRatios[`ratio${activeRatio}`].value;
-            }
-        }
+    const saved = localStorage.getItem('aloraInsulinHelperData');
+    if (saved) {
+        const data = JSON.parse(saved);
+        savedRatios = data.savedRatios || savedRatios;
+        activeRatio = data.activeRatio || 1;
+        favorites = data.favorites || [];
+        customFoods = data.customFoods || []; // Add this line
+        currentRatio = savedRatios[`ratio${activeRatio}`].value;
+    }
+}
 
         // Save data to localStorage
         function saveData() {
-            const data = {
-                savedRatios,
-                activeRatio,
-                favorites
-            };
-            localStorage.setItem('aloraInsulinHelperData', JSON.stringify(data));
-        }
+    const data = {
+        savedRatios,
+        activeRatio,
+        favorites,
+        customFoods // Add this line
+    };
+    localStorage.setItem('aloraInsulinHelperData', JSON.stringify(data));
+}
         // Open the popup
         function openManualModal() {
             document.getElementById('manualModal').style.display = 'flex';
@@ -923,30 +926,54 @@
 
         // Add the custom food to the "My Meal" list
         function addManualFood() {
-            const name = document.getElementById('manualName').value || "Quick Add";
-            const carbs = parseInt(document.getElementById('manualCarbs').value) || 0;
-            
-            // Create a temporary food object
-            const customFood = {
-                name: name,
-                carbs: carbs,
-                servings: 1,
-                emoji: "✨",
-                serving: "Custom Entry"
-            };
-            
-            // Add directly to selected list
-            selectedFoods.push(customFood);
-            
-            // Update UI
-            renderSelectedFoods();
-            calculateInsulin();
-            closeManualModal();
-            
-            // Scroll to the bottom to see the added item
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-        }
+    const name = document.getElementById('manualName').value;
+    const carbs = parseInt(document.getElementById('manualCarbs').value);
+    const serving = document.getElementById('manualServing').value || "1 serving";
+    const category = document.getElementById('manualCategory').value;
 
+    if (!name || isNaN(carbs)) {
+        alert("Please enter a name and carb count!");
+        return;
+    }
+
+    const newFood = {
+        name: name,
+        carbs: carbs,
+        serving: serving,
+        emoji: "✨", 
+        category: category,
+        custom: true // Mark as custom so we know it's hers
+    };
+
+    customFoods.push(newFood);
+    saveData();
+    renderFoodList();
+    closeManualModal();
+    
+    // Feedback
+    alert(name + " has been added to your permanent list!");
+}
+
+// Update the renderFoodList function to include custom foods
+function renderFoodList() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const container = document.getElementById('foodList');
+    
+    // Combine the 300 items with Alora's custom items
+    const combinedDatabase = [...foodDatabase, ...customFoods];
+    
+    // Re-sort alphabetically
+    combinedDatabase.sort((a, b) => a.name.localeCompare(b.name));
+
+    let filteredFoods = combinedDatabase.filter(food => {
+        const matchesSearch = food.name.toLowerCase().includes(searchTerm);
+        if (activeCategory === 'favorites') return matchesSearch && favorites.includes(food.name);
+        if (activeCategory === 'all') return matchesSearch;
+        return matchesSearch && food.category === activeCategory;
+    });
+
+    // ... (keep the rest of your renderFoodList code the same)
+}
         // Initialize
         function init() {
             // This line sorts the database alphabetically by name before doing anything else
@@ -1183,24 +1210,39 @@
             document.getElementById('insulinNeeded').textContent = insulinNeeded.toFixed(1);
         }
 
-        // Initialize on load
-        init();
-    </script>
-    <div id="manualModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:2000; align-items:center; justify-content:center;">
-    <div class="card" style="width:90%; max-width:400px; padding:25px;">
-        <h2 class="card-title"><span class="emoji">✏️</span> Add Custom Food</h2>
-        <div style="display:flex; flex-direction:column; gap:15px;">
+        <div id="manualModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:2000; align-items:center; justify-content:center; backdrop-filter: blur(5px);">
+    <div class="card" style="width:92%; max-width:400px; padding:20px; border: 4px solid var(--secondary);">
+        <h2 class="card-title"><span class="emoji">💾</span> Add Permanent Food</h2>
+        <div style="display:flex; flex-direction:column; gap:12px;">
             <div>
-                <label style="font-weight:700; font-size:0.9rem;">Food Name</label>
-                <input type="text" id="manualName" placeholder="e.g. Grandma's Cookie" class="search-input" style="padding-left:15px;">
+                <label style="font-weight:700; font-size:0.85rem; color: var(--text-light);">Food Name</label>
+                <input type="text" id="manualName" placeholder="e.g. Grandma's Cookie" class="search-input" style="padding-left:15px; height: 45px;">
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div>
+                    <label style="font-weight:700; font-size:0.85rem; color: var(--text-light);">Carbs (g)</label>
+                    <input type="number" id="manualCarbs" placeholder="0" class="search-input" style="padding-left:15px; height: 45px;">
+                </div>
+                <div>
+                    <label style="font-weight:700; font-size:0.85rem; color: var(--text-light);">Serving Size</label>
+                    <input type="text" id="manualServing" placeholder="e.g. 1 cookie" class="search-input" style="padding-left:15px; height: 45px;">
+                </div>
             </div>
             <div>
-                <label style="font-weight:700; font-size:0.9rem;">Total Carbs (g)</label>
-                <input type="number" id="manualCarbs" placeholder="0" class="search-input" style="padding-left:15px;">
+                <label style="font-weight:700; font-size:0.85rem; color: var(--text-light);">Category</label>
+                <select id="manualCategory" class="search-input" style="padding-left:15px; height: 45px; appearance: auto;">
+                    <option value="breakfast">🥣 Breakfast</option>
+                    <option value="fruits">🍎 Fruits</option>
+                    <option value="grains">🍞 Grains</option>
+                    <option value="dairy">🥛 Dairy</option>
+                    <option value="snacks">🍪 Snacks</option>
+                    <option value="drinks">🧃 Drinks</option>
+                    <option value="meals">🍝 Meals</option>
+                </select>
             </div>
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px;">
                 <button class="clear-btn" style="padding:12px; background:#eee; color:#666;" onclick="closeManualModal()">Cancel</button>
-                <button class="save-ratio-btn" style="padding:12px; background:var(--secondary); color:white;" onclick="addManualFood()">Add to Meal</button>
+                <button class="save-ratio-btn" style="padding:12px; background:var(--secondary); color:white;" onclick="addManualFood()">Save to List</button>
             </div>
         </div>
     </div>
