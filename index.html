@@ -987,13 +987,15 @@ function renderFoodList() {
 }
         // Initialize
         function init() {
-            // This line sorts the database alphabetically by name before doing anything else
-            foodDatabase.sort((a, b) => a.name.localeCompare(b.name));
-            
-            loadSavedData();
-            updateRatioDisplay();
-            renderFoodList();
-        }
+    showDisclaimerIfNeeded();   // ← Add this line first
+
+    // This line sorts the database...
+    foodDatabase.sort((a, b) => a.name.localeCompare(b.name));
+    
+    loadSavedData();
+    updateRatioDisplay();
+    renderFoodList();
+}
 
         // Update ratio display - FIXED to update both the buttons and input
         function updateRatioDisplay() {
@@ -1257,7 +1259,21 @@ function renderFoodList() {
             renderFoodList();
             closeManualModal();
         }
+// Disclaimer handling - shows only on first use
+function showDisclaimerIfNeeded() {
+    if (!localStorage.getItem('aloraDisclaimerAcknowledged')) {
+        document.getElementById('disclaimerModal').style.display = 'flex';
+        
+        // Optional: disable scrolling on body while modal is open
+        document.body.style.overflow = 'hidden';
+    }
+}
 
+function acknowledgeDisclaimer() {
+    localStorage.setItem('aloraDisclaimerAcknowledged', 'true');
+    document.getElementById('disclaimerModal').style.display = 'none';
+    document.body.style.overflow = 'visible'; // re-enable scrolling
+}
         init();
     </script>
 
@@ -1298,5 +1314,31 @@ function renderFoodList() {
             </div>
         </div>
     </div>
+    <!-- Medical Disclaimer Popup (shows only once) -->
+<div id="disclaimerModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 3000; align-items: center; justify-content: center; backdrop-filter: blur(8px);">
+    <div class="card" style="width: 92%; max-width: 420px; padding: 24px; border: 4px solid #ee5a5a; background: white; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+        
+        <div style="font-size: 2.8rem; margin-bottom: 16px;">⚠️</div>
+        
+        <h2 style="color: #ee5a5a; font-size: 1.35rem; margin-bottom: 18px;">Important Medical Disclaimer</h2>
+        
+        <div style="font-size: 0.92rem; line-height: 1.55; color: #2d3436; text-align: left; background: #fff9f9; padding: 16px; border-radius: 12px; margin-bottom: 20px;">
+            <strong>This app is for educational and estimation purposes only.</strong><br><br>
+            
+            Alora's Insulin Helper is <strong>NOT a medical device</strong> and does not provide medical advice.<br><br>
+            
+            Insulin dosing is serious. Incorrect calculations can be dangerous.<br><br>
+            
+            <strong>Always verify with your diabetes care team or doctor before using any calculated dose.</strong><br><br>
+            
+            The developer and this app are <strong>not responsible</strong> for any incorrect calculations, medical decisions, or health outcomes.
+        </div>
+
+        <button onclick="acknowledgeDisclaimer()" 
+                style="width: 100%; padding: 14px; background: var(--secondary); color: white; border: none; border-radius: 14px; font-size: 1.1rem; font-weight: 800; cursor: pointer;">
+            I Understand & Accept
+        </button>
+    </div>
+</div>
 </body>
 </html>
