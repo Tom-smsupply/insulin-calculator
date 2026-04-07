@@ -810,6 +810,9 @@
 
         // Initialize
         function init() {
+            // This line sorts the database alphabetically by name before doing anything else
+            foodDatabase.sort((a, b) => a.name.localeCompare(b.name));
+            
             loadSavedData();
             updateRatioDisplay();
             renderFoodList();
