@@ -621,6 +621,7 @@
             <div class="category-filters">
                 <button class="category-btn favorites-filter" data-category="favorites" onclick="filterByCategory('favorites', this)">⭐ Favorites</button>
                 <button class="category-btn active" data-category="all" onclick="filterByCategory('all', this)">All</button>
+                <button class="category-btn" style="background: #e8f8f7; border-color: var(--secondary);" onclick="openManualModal()">➕ Manual Add</button>
                 <button class="category-btn" data-category="breakfast" onclick="filterByCategory('breakfast', this)">🥣</button>
                 <button class="category-btn" data-category="fruits" onclick="filterByCategory('fruits', this)">🍎</button>
                 <button class="category-btn" data-category="grains" onclick="filterByCategory('grains', this)">🍞</button>
@@ -907,6 +908,44 @@
             };
             localStorage.setItem('aloraInsulinHelperData', JSON.stringify(data));
         }
+        // Open the popup
+        function openManualModal() {
+            document.getElementById('manualModal').style.display = 'flex';
+            document.getElementById('manualName').focus();
+        }
+
+        // Close the popup
+        function closeManualModal() {
+            document.getElementById('manualModal').style.display = 'none';
+            document.getElementById('manualName').value = '';
+            document.getElementById('manualCarbs').value = '';
+        }
+
+        // Add the custom food to the "My Meal" list
+        function addManualFood() {
+            const name = document.getElementById('manualName').value || "Quick Add";
+            const carbs = parseInt(document.getElementById('manualCarbs').value) || 0;
+            
+            // Create a temporary food object
+            const customFood = {
+                name: name,
+                carbs: carbs,
+                servings: 1,
+                emoji: "✨",
+                serving: "Custom Entry"
+            };
+            
+            // Add directly to selected list
+            selectedFoods.push(customFood);
+            
+            // Update UI
+            renderSelectedFoods();
+            calculateInsulin();
+            closeManualModal();
+            
+            // Scroll to the bottom to see the added item
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
 
         // Initialize
         function init() {
@@ -1147,5 +1186,24 @@
         // Initialize on load
         init();
     </script>
+    <div id="manualModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:2000; align-items:center; justify-content:center;">
+    <div class="card" style="width:90%; max-width:400px; padding:25px;">
+        <h2 class="card-title"><span class="emoji">✏️</span> Add Custom Food</h2>
+        <div style="display:flex; flex-direction:column; gap:15px;">
+            <div>
+                <label style="font-weight:700; font-size:0.9rem;">Food Name</label>
+                <input type="text" id="manualName" placeholder="e.g. Grandma's Cookie" class="search-input" style="padding-left:15px;">
+            </div>
+            <div>
+                <label style="font-weight:700; font-size:0.9rem;">Total Carbs (g)</label>
+                <input type="number" id="manualCarbs" placeholder="0" class="search-input" style="padding-left:15px;">
+            </div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px;">
+                <button class="clear-btn" style="padding:12px; background:#eee; color:#666;" onclick="closeManualModal()">Cancel</button>
+                <button class="save-ratio-btn" style="padding:12px; background:var(--secondary); color:white;" onclick="addManualFood()">Add to Meal</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
