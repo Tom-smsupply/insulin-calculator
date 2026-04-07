@@ -1188,7 +1188,7 @@ function renderFoodList() {
             calculateInsulin();
         }
 
-        // Calculate insulin
+       // Calculate insulin
         function calculateInsulin() {
             const banner = document.getElementById('resultsBanner');
             
@@ -1210,42 +1210,82 @@ function renderFoodList() {
             document.getElementById('insulinNeeded').textContent = insulinNeeded.toFixed(1);
         }
 
-        <div id="manualModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:2000; align-items:center; justify-content:center; backdrop-filter: blur(5px);">
-    <div class="card" style="width:92%; max-width:400px; padding:20px; border: 4px solid var(--secondary);">
-        <h2 class="card-title"><span class="emoji">💾</span> Add Permanent Food</h2>
-        <div style="display:flex; flex-direction:column; gap:12px;">
-            <div>
-                <label style="font-weight:700; font-size:0.85rem; color: var(--text-light);">Food Name</label>
-                <input type="text" id="manualName" placeholder="e.g. Grandma's Cookie" class="search-input" style="padding-left:15px; height: 45px;">
-            </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        // --- NEW FUNCTIONS FOR MANUAL ADD ---
+        function openManualModal() {
+            document.getElementById('manualModal').style.display = 'flex';
+        }
+
+        function closeManualModal() {
+            document.getElementById('manualModal').style.display = 'none';
+            document.getElementById('manualName').value = '';
+            document.getElementById('manualCarbs').value = '';
+            document.getElementById('manualServing').value = '';
+        }
+
+        function addManualFood() {
+            const name = document.getElementById('manualName').value;
+            const carbs = parseInt(document.getElementById('manualCarbs').value);
+            const serving = document.getElementById('manualServing').value || "1 serving";
+            const category = document.getElementById('manualCategory').value;
+
+            if (!name || isNaN(carbs)) {
+                alert("Please enter a name and carb count!");
+                return;
+            }
+
+            const newFood = {
+                name: name,
+                carbs: carbs,
+                serving: serving,
+                emoji: "✨", 
+                category: category
+            };
+
+            customFoods.push(newFood);
+            saveData();
+            renderFoodList();
+            closeManualModal();
+        }
+
+        init();
+    </script>
+
+    <div id="manualModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:2000; align-items:center; justify-content:center; backdrop-filter: blur(5px);">
+        <div class="card" style="width:92%; max-width:400px; padding:20px; border: 4px solid var(--secondary);">
+            <h2 class="card-title"><span class="emoji">💾</span> Add Permanent Food</h2>
+            <div style="display:flex; flex-direction:column; gap:12px;">
                 <div>
-                    <label style="font-weight:700; font-size:0.85rem; color: var(--text-light);">Carbs (g)</label>
-                    <input type="number" id="manualCarbs" placeholder="0" class="search-input" style="padding-left:15px; height: 45px;">
+                    <label style="font-weight:700; font-size:0.85rem; color: var(--text-light);">Food Name</label>
+                    <input type="text" id="manualName" placeholder="e.g. Grandma's Cookie" class="search-input" style="padding-left:15px; height: 45px;">
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div>
+                        <label style="font-weight:700; font-size:0.85rem; color: var(--text-light);">Carbs (g)</label>
+                        <input type="number" id="manualCarbs" placeholder="0" class="search-input" style="padding-left:15px; height: 45px;">
+                    </div>
+                    <div>
+                        <label style="font-weight:700; font-size:0.85rem; color: var(--text-light);">Serving Size</label>
+                        <input type="text" id="manualServing" placeholder="1 cookie" class="search-input" style="padding-left:15px; height: 45px;">
+                    </div>
                 </div>
                 <div>
-                    <label style="font-weight:700; font-size:0.85rem; color: var(--text-light);">Serving Size</label>
-                    <input type="text" id="manualServing" placeholder="e.g. 1 cookie" class="search-input" style="padding-left:15px; height: 45px;">
+                    <label style="font-weight:700; font-size:0.85rem; color: var(--text-light);">Category</label>
+                    <select id="manualCategory" class="search-input" style="padding-left:15px; height: 45px; appearance: auto; background: white;">
+                        <option value="breakfast">🥣 Breakfast</option>
+                        <option value="fruits">🍎 Fruits</option>
+                        <option value="grains">🍞 Grains</option>
+                        <option value="dairy">🥛 Dairy</option>
+                        <option value="snacks">🍪 Snacks</option>
+                        <option value="drinks">🧃 Drinks</option>
+                        <option value="meals">🍝 Meals</option>
+                    </select>
                 </div>
-            </div>
-            <div>
-                <label style="font-weight:700; font-size:0.85rem; color: var(--text-light);">Category</label>
-                <select id="manualCategory" class="search-input" style="padding-left:15px; height: 45px; appearance: auto;">
-                    <option value="breakfast">🥣 Breakfast</option>
-                    <option value="fruits">🍎 Fruits</option>
-                    <option value="grains">🍞 Grains</option>
-                    <option value="dairy">🥛 Dairy</option>
-                    <option value="snacks">🍪 Snacks</option>
-                    <option value="drinks">🧃 Drinks</option>
-                    <option value="meals">🍝 Meals</option>
-                </select>
-            </div>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px;">
-                <button class="clear-btn" style="padding:12px; background:#eee; color:#666;" onclick="closeManualModal()">Cancel</button>
-                <button class="save-ratio-btn" style="padding:12px; background:var(--secondary); color:white;" onclick="addManualFood()">Save to List</button>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px;">
+                    <button class="clear-btn" style="padding:12px; background:#eee; color:#666;" onclick="closeManualModal()">Cancel</button>
+                    <button class="save-ratio-btn" style="padding:12px; background:var(--secondary); color:white;" onclick="addManualFood()">Save to List</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </body>
 </html>
