@@ -44,74 +44,35 @@
         .card { background: var(--card-bg); border-radius: 20px; padding: 16px; margin-bottom: 14px; box-shadow: var(--shadow); }
         .card-title { font-family: 'Fredoka One', cursive; font-size: 1.1rem; color: var(--secondary); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
 
-        /* Ratio Section - Restored to original look */
-        .ratio-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
+        /* Ratio Section */
+        .ratio-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
         .ratio-btn {
             padding: 12px 8px;
             border: 3px solid #e0e0e0;
             border-radius: 14px;
             background: white;
             cursor: pointer;
-            transition: all 0.2s ease;
             text-align: center;
         }
         .ratio-btn.active {
             border-color: var(--secondary);
             background: linear-gradient(135deg, #e8f8f7 0%, #d4f4f1 100%);
         }
-        .ratio-btn .ratio-name {
-            font-weight: 800;
-            font-size: 1rem;
-            color: var(--text-dark);
-        }
-        .ratio-btn .ratio-value {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            margin-top: 2px;
-        }
+        .ratio-btn .ratio-name { font-weight: 800; font-size: 1rem; color: var(--text-dark); }
+        .ratio-btn .ratio-value { font-size: 0.85rem; color: var(--text-light); margin-top: 2px; }
 
-        .custom-ratio {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .ratio-input-group {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .ratio-input-group label {
-            font-weight: 700;
-            font-size: 0.85rem;
-            color: var(--text-light);
-        }
+        .custom-ratio { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
+        .ratio-input-group { display: flex; align-items: center; gap: 6px; }
         .ratio-input-group input {
-            width: 60px;
-            padding: 8px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 700;
-            text-align: center;
+            width: 60px; padding: 8px; border: 2px solid #e0e0e0; border-radius: 10px;
+            font-size: 1rem; font-weight: 700; text-align: center;
         }
         .save-ratio-btn {
-            padding: 8px 16px;
-            background: var(--accent);
-            border: none;
-            border-radius: 10px;
-            font-weight: 800;
-            font-size: 0.85rem;
-            cursor: pointer;
+            padding: 8px 16px; background: var(--accent); border: none; border-radius: 10px;
+            font-weight: 800; font-size: 0.85rem; cursor: pointer;
         }
 
-        /* Search & Suggestions */
+        /* Search */
         .search-container { position: relative; margin-bottom: 12px; }
         .search-input { width: 100%; padding: 12px 16px; padding-left: 44px; border: 3px solid #e0e0e0; border-radius: 14px; font-size: 1rem; font-weight: 600; }
         .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 1.2rem; }
@@ -122,10 +83,8 @@
         .suggestion-item {
             padding: 12px 16px; border-bottom: 1px solid #f0f0f0; cursor: pointer; display: flex; align-items: center; gap: 10px;
         }
-        .suggestion-item:last-child { border-bottom: none; }
         .suggestion-item:hover { background: #f0f8f7; }
 
-        /* Rest of your styles */
         .food-list { max-height: 320px; overflow-y: auto; border-radius: 14px; border: 2px solid #f0f0f0; }
         .food-item { display: flex; align-items: center; padding: 12px 14px; border-bottom: 1px solid #f0f0f0; cursor: pointer; }
         .food-item.selected { background: linear-gradient(135deg, #ffe8e8 0%, #ffd4d4 100%); }
@@ -154,7 +113,7 @@
             <p class="subtitle">Build your meal & calculate your dose!</p>
         </header>
 
-        <!-- Ratio Section - FIXED to match your original design -->
+        <!-- Ratio Section -->
         <div class="card">
             <h2 class="card-title"><span class="emoji">⚙️</span> My Insulin Ratio</h2>
             <div class="ratio-buttons">
@@ -177,7 +136,7 @@
             </div>
         </div>
 
-        <!-- Food Search with live suggestions -->
+        <!-- Food Search -->
         <div class="card">
             <h2 class="card-title"><span class="emoji">🍽️</span> Add Foods</h2>
             <div class="search-container">
@@ -189,7 +148,7 @@
             <div class="category-filters">
                 <button class="category-btn favorites-filter" data-category="favorites" onclick="filterByCategory('favorites', this)">⭐ Favorites</button>
                 <button class="category-btn active" data-category="all" onclick="filterByCategory('all', this)">All</button>
-                <button class="category-btn" style="background:#e8f8f7; border-color:var(--secondary)" onclick="openManualModal()">➕ Manual Add</button>
+                <button class="category-btn" style="background:#e8f8f7;border-color:var(--secondary)" onclick="openManualModal()">➕ Manual Add</button>
                 <button class="category-btn" data-category="breakfast" onclick="filterByCategory('breakfast', this)">🥣</button>
                 <button class="category-btn" data-category="fruits" onclick="filterByCategory('fruits', this)">🍎</button>
                 <button class="category-btn" data-category="grains" onclick="filterByCategory('grains', this)">🍞</button>
@@ -229,7 +188,7 @@
         </div>
     </div>
 
-    <!-- Manual Add Modal -->
+    <!-- Manual Modal -->
     <div id="manualModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:2000; align-items:center; justify-content:center; backdrop-filter: blur(5px);">
         <div class="card" style="width:92%; max-width:400px; padding:20px; border: 4px solid var(--secondary);">
             <h2 class="card-title"><span class="emoji">💾</span> Add Permanent Food</h2>
@@ -268,19 +227,20 @@
         </div>
     </div>
 
-    <!-- Disclaimer Popup -->
-    <div id="disclaimerModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 3000; align-items: center; justify-content: center; backdrop-filter: blur(8px);">
-        <div class="card" style="width: 92%; max-width: 420px; padding: 24px; border: 4px solid #ee5a5a; background: white; text-align: center;">
+    <!-- Disclaimer Modal - Now guaranteed to show first -->
+    <div id="disclaimerModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(8px);">
+        <div class="card" style="width: 92%; max-width: 420px; padding: 24px; border: 4px solid #ee5a5a; background: white; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
             <div style="font-size: 2.8rem; margin-bottom: 16px;">⚠️</div>
             <h2 style="color: #ee5a5a; font-size: 1.35rem; margin-bottom: 18px;">Important Medical Disclaimer</h2>
             <div style="font-size: 0.92rem; line-height: 1.55; text-align: left; background: #fff9f9; padding: 16px; border-radius: 12px; margin-bottom: 20px;">
                 This app is for educational and estimation purposes only.<br><br>
-                Alora's Insulin Helper is <strong>NOT a medical device</strong>.<br><br>
+                Alora's Insulin Helper is <strong>NOT a medical device</strong> and does not provide medical advice.<br><br>
                 Insulin dosing is serious. Incorrect calculations can be dangerous.<br><br>
-                Always verify with your diabetes care team or doctor before using any calculated dose.<br><br>
-                The developer is <strong>not responsible</strong> for any incorrect calculations or health outcomes.
+                <strong>Always verify with your diabetes care team or doctor before using any calculated dose.</strong><br><br>
+                The developer and this app are <strong>not responsible</strong> for any incorrect calculations, medical decisions, or health outcomes.
             </div>
-            <button onclick="acknowledgeDisclaimer()" style="width:100%; padding:14px; background:var(--secondary); color:white; border:none; border-radius:14px; font-size:1.1rem; font-weight:800;">
+            <button onclick="acknowledgeDisclaimer()" 
+                    style="width:100%; padding:14px; background:var(--secondary); color:white; border:none; border-radius:14px; font-size:1.1rem; font-weight:800; cursor:pointer;">
                 I Understand & Accept
             </button>
         </div>
@@ -523,11 +483,13 @@
             localStorage.setItem('aloraInsulinHelperData', JSON.stringify(data));
         }
 
-        // Disclaimer
+        // Disclaimer - Fixed to run early
         function showDisclaimerIfNeeded() {
             if (!localStorage.getItem('aloraDisclaimerAcknowledged')) {
-                document.getElementById('disclaimerModal').style.display = 'flex';
-                document.body.style.overflow = 'hidden';
+                setTimeout(() => {
+                    document.getElementById('disclaimerModal').style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                }, 100); // small delay ensures DOM is ready
             }
         }
 
@@ -537,32 +499,24 @@
             document.body.style.overflow = 'visible';
         }
 
-        // Manual Add
-        function openManualModal() {
-            document.getElementById('manualModal').style.display = 'flex';
-        }
-        function closeManualModal() {
-            document.getElementById('manualModal').style.display = 'none';
-        }
+        // Rest of your functions (manual modal, ratio, food list, search, etc.)
+        function openManualModal() { document.getElementById('manualModal').style.display = 'flex'; }
+        function closeManualModal() { document.getElementById('manualModal').style.display = 'none'; }
+
         function addManualFood() {
             const name = document.getElementById('manualName').value.trim();
             const carbs = parseInt(document.getElementById('manualCarbs').value);
-            const serving = document.getElementById('manualServing').value.trim() || "1 serving";
-            const category = document.getElementById('manualCategory').value;
-
             if (!name || isNaN(carbs)) {
                 alert("Please enter a name and carb count!");
                 return;
             }
-
-            customFoods.push({ name, carbs, serving, emoji: "✨", category });
+            customFoods.push({ name, carbs, serving: "1 serving", emoji: "✨", category: document.getElementById('manualCategory').value });
             saveData();
             renderFoodList(getFilteredFoods());
             closeManualModal();
-            alert(name + " added to your list!");
+            alert(name + " added!");
         }
 
-        // Ratio Functions
         function updateRatioDisplay() {
             document.getElementById('ratio1-display').textContent = savedRatios.ratio1.value;
             document.getElementById('ratio2-display').textContent = savedRatios.ratio2.value;
@@ -703,7 +657,7 @@
             }
             banner.classList.add('show');
 
-            const totalCarbs = selectedFoods.reduce((sum, f) => sum + f.carbs * f.servings, 0);
+            const totalCarbs = selectedFoods.reduce((sum, f) => sum + (f.carbs * f.servings), 0);
             const insulinNeeded = totalCarbs / currentRatio;
 
             document.getElementById('totalCarbs').textContent = Math.round(totalCarbs);
@@ -727,7 +681,7 @@
                 <div class="suggestion-item" onclick="selectSuggestion('${food.name.replace(/'/g, "\\'")}')">
                     <span>${food.emoji}</span>
                     <span style="flex:1">${food.name}</span>
-                    <span style="color:var(--primary); font-weight:700">${food.carbs}g</span>
+                    <span style="color:var(--primary);font-weight:700">${food.carbs}g</span>
                 </div>
             `).join('');
             suggestionsBox.style.display = 'block';
@@ -747,17 +701,19 @@
             renderFoodList(getFilteredFoods());
         }
 
+        // Initialize - Disclaimer now runs first
         function init() {
-            showDisclaimerIfNeeded();
             loadSavedData();
             updateRatioDisplay();
+            showDisclaimerIfNeeded();   // Called early
 
             activeCategory = 'all';
             document.querySelector('.category-btn[data-category="all"]').classList.add('active');
             renderFoodList(getCombinedDatabase());
         }
 
-        init();
+        // Start the app
+        window.onload = init;
     </script>
 </body>
 </html>
